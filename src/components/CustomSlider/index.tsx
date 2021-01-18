@@ -5,23 +5,23 @@ const CustomSlider: React.FC = () => {
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
 
-  useEffect(() => {
-    console.log(containerRef);
-    if (containerRef && containerRef.current) {
-      containerRef.current.addEventListener('mousemove', event => {
-        setX(event.clientX);
-        setY(event.clientY);
-      });
+  const handleMouseMove: any = (event: MouseEvent) => {
+    setX(event.clientX);
+    setY(event.clientY);
+  };
 
-      return () => {
-        containerRef &&
-          containerRef.current &&
-          containerRef.current.removeEventListener('mousemove', event => {
-            setX(event.clientX);
-            setY(event.clientY);
-          });
-      };
+  useEffect(() => {
+    const container = containerRef.current;
+
+    if (container) {
+      container.addEventListener('mousemove', handleMouseMove);
     }
+
+    return () => {
+      if (container) {
+        container.removeEventListener('mousemove', handleMouseMove);
+      }
+    };
   }, []);
 
   return (
